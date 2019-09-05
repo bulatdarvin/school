@@ -6,7 +6,7 @@
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 19:58:54 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/05 19:59:22 by ssilvana         ###   ########.fr       */
+/*   Updated: 2019/09/05 20:58:03 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static int		word(const char *str, char c)
 	}
 	return (k);
 }
-
 
 static int		size(const char *str, char c)
 {
@@ -56,12 +55,12 @@ static void		copy(char *dest, const char *str, int n)
 	}
 }
 
-char	**ft_strsplit(char const *str, char c)
+char			**ft_strsplit(char const *str, char c)
 {
-	int k;
-	int i;
-	int s;
-	char **tab;
+	int		k;
+	int		i;
+	int		s;
+	char	**tab;
 
 	i = 0;
 	s = 0;
@@ -80,5 +79,5 @@ char	**ft_strsplit(char const *str, char c)
 		i++;
 	}
 	tab[i] = 0;
-	return(tab);
+	return (tab);
 }

@@ -40,7 +40,7 @@ int main()
 //	printf("%s  %s\n%s", d,s, ft_strjoin(d, s));
 //	printf(" %zu %lu\n", ft_strlcat(d, s, 3), strlcat(a, b, 3));
 //	printf("%s    %s",d, a);
-	printf("\n%s", ft_strtrim("cd ~/42FileChecker && bash ./42FileChecker.sh"));
+	printf("%s", ft_strtrim(" \n \t lorem ipsum dolor sit amet"));
 	//	char **tab = ft_strsplit("123ccc546",'c');
 	//	int i = 0;
 	//	while (i < 2)
