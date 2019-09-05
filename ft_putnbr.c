@@ -1,41 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 21:25:19 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/03 21:58:30 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/07/08 12:35:08 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/05 19:23:30 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strnstr(const char *str, const char *to_find, size_t len)
+void	ft_putnbr(int nb)
 {
-	size_t i;
-	size_t t;
-	size_t x;
-	size_t q;
-
-	i = 0;
-	t = 0;
-	x = ft_strlen(to_find);
-	while (str[t] != '\0' && t != len)
+	if (nb == -2147483648)
 	{
-		while (str[t] != to_find[i] && t != len)
-			t++;
-		q = t;
-		while (str[t] == to_find[i] && to_find[i] != '\0' && t != len)
-		{
-			i++;
-			t++;
-		}
-		if (t - q == x)
-			return ((char*)(str + q));
-		else
-			i = 0;
+		ft_putchar('-');
+		ft_putchar('2');
+		nb = 147483648;
 	}
-	return (NULL);
+	if (nb < 0)
+	{
+		ft_putchar('-');
+		nb = nb * -1;
+	}
+	if (nb >= 10)
+	{
+		ft_putnbr(nb / 10);
+		ft_putchar((nb % 10) + '0');
+	}
+	else
+	{
+		ft_putchar(nb + '0');
+	}
 }

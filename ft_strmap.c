@@ -1,41 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_strmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 21:25:19 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/03 21:58:30 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/09/05 14:19:57 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/05 19:18:41 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strnstr(const char *str, const char *to_find, size_t len)
+char	*ft_strmap(char const *s, char (*f)(char))
 {
-	size_t i;
-	size_t t;
-	size_t x;
-	size_t q;
+	size_t	i;
+	char	*a;
 
 	i = 0;
-	t = 0;
-	x = ft_strlen(to_find);
-	while (str[t] != '\0' && t != len)
+	a = (char*)ft_memalloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (f == 0 && a == 0)
+		return (NULL);
+	while (i < ft_strlen(s))
 	{
-		while (str[t] != to_find[i] && t != len)
-			t++;
-		q = t;
-		while (str[t] == to_find[i] && to_find[i] != '\0' && t != len)
-		{
-			i++;
-			t++;
-		}
-		if (t - q == x)
-			return ((char*)(str + q));
-		else
-			i = 0;
+		a[i] = f(s[i]);
+		i++;
 	}
-	return (NULL);
+	a[i] = '\0';
+	return (a);
 }

@@ -1,41 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 21:25:19 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/03 21:58:30 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/09/05 15:05:47 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/05 19:18:21 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strnstr(const char *str, const char *to_find, size_t len)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t i;
-	size_t t;
-	size_t x;
-	size_t q;
+	char	*a;
+	int		len;
+	int		i;
 
+	len = ft_strlen(s1) + ft_strlen(s2);
+	a = ft_strnew(len);
 	i = 0;
-	t = 0;
-	x = ft_strlen(to_find);
-	while (str[t] != '\0' && t != len)
+	while (*s1)
 	{
-		while (str[t] != to_find[i] && t != len)
-			t++;
-		q = t;
-		while (str[t] == to_find[i] && to_find[i] != '\0' && t != len)
-		{
-			i++;
-			t++;
-		}
-		if (t - q == x)
-			return ((char*)(str + q));
-		else
-			i = 0;
+		a[i] = *s1;
+		s1++;
+		i++;
 	}
-	return (NULL);
+	while (*s2)
+	{
+		a[i] = *s2;
+		s2++;
+		i++;
+	}
+	a[i] = '\0';
+	return (a);
 }

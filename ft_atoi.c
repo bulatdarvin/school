@@ -1,41 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 21:25:19 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/03 21:58:30 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/09/05 16:57:35 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/05 17:07:21 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strnstr(const char *str, const char *to_find, size_t len)
+static	int		check(char c)
 {
-	size_t i;
-	size_t t;
-	size_t x;
-	size_t q;
+	if (c == '-')
+		return (-1);
+	return (1);
+}
 
-	i = 0;
-	t = 0;
-	x = ft_strlen(to_find);
-	while (str[t] != '\0' && t != len)
+int				ft_atoi(const char *str)
+{
+	int num;
+	int min;
+
+	min = 1;
+	num = 0;
+	while (*str == ' ' || *str == '\n' || *str == '\t' ||
+			*str == '\f' || *str == '\v' || *str == '\r')
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		while (str[t] != to_find[i] && t != len)
-			t++;
-		q = t;
-		while (str[t] == to_find[i] && to_find[i] != '\0' && t != len)
-		{
-			i++;
-			t++;
-		}
-		if (t - q == x)
-			return ((char*)(str + q));
-		else
-			i = 0;
+		min = check(*str);
+		str++;
 	}
-	return (NULL);
+	while (ft_isdigit(*str))
+	{
+		num = num * 10 + *str - 48;
+		str++;
+	}
+	return (num * min);
 }
