@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncpy.c                                       :+:      :+:    :+:   */
+/*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/08 12:45:11 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/07/09 23:12:55 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/09/06 19:45:55 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/06 19:45:58 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char	*ft_strncpy(char *dest, const char *src, size_t n)
+void	ft_lstdel(t_list **alst, void (*del)(void*, size_t))
 {
-	size_t i;
+	t_list *a;
 
-	i = 0;
-	while (src[i] != '\0' && n > 0)
+	if (alst)
 	{
-		dest[i] = src[i];
-		i++;
-		n--;
+		while (*alst)
+		{
+			a = (*alst);
+			(*alst) = (*alst)->next;
+			del((a)->content, (a)->content_size);
+			ft_memdel((void**)&a);
+		}
+		free(*alst);
 	}
-	while (dest[i] != '\0' && n > 0)
-	{
-		dest[i] = '\0';
-		i++;
-		n--;
-	}
-	return (dest);
 }

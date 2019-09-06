@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 21:25:19 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/03 21:58:30 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/09/06 19:27:51 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/06 20:08:21 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strnstr(const char *str, const char *to_find, size_t len)
+t_list	*ft_lstnew(void const *content, size_t content_size)
 {
-	size_t i;
-	size_t t;
+	t_list *s;
 
-	i = 0;
-	t = 0;
-	if (*to_find == 0)
-		return ((char*)str);
-	while (str[t] != '\0' && t != len)
+	s = (t_list*)ft_memalloc(sizeof(t_list));
+	if (s == 0)
+		return (0);
+	if (content == NULL)
 	{
-		if (str[t] == to_find[0])
-		{
-			i = 0;
-			while (str[t + i] == to_find[i] && to_find[i] && t + i < len)
-				i++;
-			if (to_find[i] == '\0')
-				return ((char*)(str + t));
-		}
-		t++;
+		s->content = NULL;
+		s->content_size = 0;
 	}
-	return (NULL);
+	else
+	{
+		s->content = ft_memalloc(content_size);
+		if (s->content == NULL)
+		{
+			ft_memdel((void**)&s);
+			return (NULL);
+		}
+		ft_memcpy(s->content, content, content_size);
+		s->content_size = content_size;
+	}
+	s->next = NULL;
+	return (s);
 }

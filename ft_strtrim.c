@@ -29,27 +29,23 @@ static void	ft_copy(char const *s, char *a, size_t len)
 
 char		*ft_strtrim(char const *s)
 {
-	size_t		len;
+	size_t		l;
+	size_t		k;
 	char		*a;
 	const char	*tmp;
 
-	len = 0;
+	l = 0;
 	tmp = s;
-	while (*s == '\t' || *s == '\n' || *s == ' ')
-		s++;
-	while (*s)
-	{
-		s++;
-		len++;
-	}
-	while (*(s - 1) == '\t' || *(s - 1) == '\n' || *(s - 1) == ' ')
-	{
-		len--;
-		s--;
-	}
-	a = ft_strnew(len);
+	k = ft_strlen(s);
+	while ((s[l] == '\t' || s[l] == '\n' || s[l] == ' ') && s[l] != '\0')
+		l++;
+	while (s[k - 1] == '\t' || s[k - 1] == '\n' || s[k - 1] == ' ')
+		k--;
+	if (k < l)
+		k = l;
+	a = ft_strnew(k - l);
 	if (a == 0)
 		return (NULL);
-	ft_copy(tmp, a, len);
+	ft_copy(tmp, a, k - l);
 	return (a);
 }

@@ -1,33 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncpy.c                                       :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/08 12:45:11 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/07/09 23:12:55 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/09/06 15:01:38 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/06 15:40:37 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
-char	*ft_strncpy(char *dest, const char *src, size_t n)
+void	ft_putchar_fd(char c, int fd)
 {
-	size_t i;
-
-	i = 0;
-	while (src[i] != '\0' && n > 0)
-	{
-		dest[i] = src[i];
-		i++;
-		n--;
-	}
-	while (dest[i] != '\0' && n > 0)
-	{
-		dest[i] = '\0';
-		i++;
-		n--;
-	}
-	return (dest);
+	write(fd, &c, sizeof(c));
 }

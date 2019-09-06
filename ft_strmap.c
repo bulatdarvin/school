@@ -18,8 +18,8 @@ char	*ft_strmap(char const *s, char (*f)(char))
 	char	*a;
 
 	i = 0;
-	a = (char*)ft_memalloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (f == 0 && a == 0)
+	a = ft_strnew(ft_strlen(s));
+	if (f == 0 || a == 0)
 		return (NULL);
 	while (i < ft_strlen(s))
 	{

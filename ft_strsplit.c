@@ -24,7 +24,7 @@ static int		word(const char *str, char c)
 			str++;
 		if (*str != '\0')
 			k++;
-		while (*str == c)
+		while (*str != c && *str != '\0')
 			str++;
 	}
 	return (k);
@@ -43,18 +43,6 @@ static int		size(const char *str, char c)
 	return (i);
 }
 
-static void		copy(char *dest, const char *str, int n)
-{
-	int i;
-
-	i = 0;
-	while (str[i] != '\0' && i < n)
-	{
-		dest[i] = str[i];
-		i++;
-	}
-}
-
 char			**ft_strsplit(char const *str, char c)
 {
 	int		k;
@@ -62,21 +50,23 @@ char			**ft_strsplit(char const *str, char c)
 	int		s;
 	char	**tab;
 
-	i = 0;
+	i = -1;
 	s = 0;
 	k = word(str, c);
 	tab = (char**)malloc(sizeof(char*) * (k + 1));
-	while (i < k)
+	if (tab == 0)
+		return (NULL);
+	while (i++ < k - 1)
 	{
 		while (*str == c)
 			str++;
 		s = size(str, c);
 		tab[i] = ft_strnew(s);
-		copy(tab[i], str, s);
-		tab[i][s] = '\0';
+		if (tab[i] == 0)
+			return (NULL);
+		ft_strncpy(tab[i], str, s);
 		while (*str != c && *str != '\0')
 			str++;
-		i++;
 	}
 	tab[i] = 0;
 	return (tab);

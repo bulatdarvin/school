@@ -21,8 +21,8 @@ static	int		check(char c)
 
 int				ft_atoi(const char *str)
 {
-	int num;
-	int min;
+	long int	num;
+	int			min;
 
 	min = 1;
 	num = 0;
@@ -39,5 +39,9 @@ int				ft_atoi(const char *str)
 		num = num * 10 + *str - 48;
 		str++;
 	}
+	if (num > 2147483647 && min == 1)
+		return (-2147483648 + num - 2147483648);
+	if (num > 2147483648 && min == -1)
+		return (2147483647 - num + 2147483648);
 	return (num * min);
 }
