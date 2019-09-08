@@ -21,27 +21,28 @@ static void		ft_del(void *content, size_t contsize)
 
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list *list;
+	t_list *t;
+	t_list *elem;
 	t_list *first;
-	t_list *prev;
 
-	list = f(lst);
-	if (list == 0)
+	if (lst == 0 || f == 0)
 		return (NULL);
-	first = list;
-	prev = list;
-	lst = lst->next;
-	while (lst)
+	t = f(lst);
+	first = ft_lstnew(t->content, t->content_size);
+	if (first == 0)
+		return (NULL);
+	elem = first;
+	while (lst->next)
 	{
-		list = f(lst);
-		if (list == 0)
+		lst = lst->next;
+		t = f(lst);
+		elem->next = ft_lstnew(t->content, t->content_size);
+		if (elem->next == 0)
 		{
 			ft_lstdel(&first, &ft_del);
 			return (NULL);
 		}
-		prev->next = list;
-		lst = lst->next;
-		prev = list;
+		elem = elem->next;
 	}
 	return (first);
 }

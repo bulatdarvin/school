@@ -35,7 +35,7 @@ static int		size(const char *str, char c)
 	int i;
 
 	i = 0;
-	while (*str != c)
+	while (*str != c && *str)
 	{
 		str++;
 		i++;
@@ -43,15 +43,28 @@ static int		size(const char *str, char c)
 	return (i);
 }
 
+static int		creation(char const *str, char **tab, int i, int s)
+{
+	tab[i] = ft_strnew(s);
+	if (tab[i] == 0)
+	{
+		ft_memdel((void**)tab);
+		return (0);
+	}
+	ft_strncpy(tab[i], str, s);
+	return (1);
+}
+
 char			**ft_strsplit(char const *str, char c)
 {
 	int		k;
-	int		i;
 	int		s;
+	int		i;
 	char	**tab;
 
 	i = -1;
-	s = 0;
+	if (str == 0)
+		return (NULL);
 	k = word(str, c);
 	tab = (char**)malloc(sizeof(char*) * (k + 1));
 	if (tab == 0)
@@ -61,10 +74,8 @@ char			**ft_strsplit(char const *str, char c)
 		while (*str == c)
 			str++;
 		s = size(str, c);
-		tab[i] = ft_strnew(s);
-		if (tab[i] == 0)
-			return (NULL);
-		ft_strncpy(tab[i], str, s);
+		if (creation(str, tab, i, s) == 0)
+			return (0);
 		while (*str != c && *str != '\0')
 			str++;
 	}

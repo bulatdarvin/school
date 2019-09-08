@@ -17,15 +17,15 @@ INCLUDE = libft.h
 all: $(NAME)
 
 $(NAME):
-	@gcc -Wall -Wextra -Werror -c $(SRC) -I $(INCLUDE)
-	@ar rc $(NAME) $(FUNCTION)
+		@gcc -Wall -Wextra -Werror -c $(SRC) -I $(INCLUDE)
+		@ar rc $(NAME) $(FUNCTION)
 	
 clean:
-	@/bin/rm -f $(FUNCTION)
-	@/bin/rm -f *.h.gch
-	@/bin/rm -f .*.swp
+		@/bin/rm -f $(FUNCTION)
+		@/bin/rm -f *.h.gch
+		@/bin/rm -f .*.swp
 
 fclean: clean
-	@/bin/rm -f $(NAME)
+		@/bin/rm -f $(NAME)
 
 re: fclean all

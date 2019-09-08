@@ -54,16 +54,14 @@ char			*ft_itoa(int n)
 	char		*a;
 
 	min = 1;
-	size = 0;
+	size = 1;
 	num = n;
 	if (n < 0)
 	{
 		num = num * (-1);
 		min = -1;
 	}
-	if (num == 0)
-		a = sozd(min, 1, (long long)n);
-	while (n != 0)
+	while (n / 10 != 0)
 	{
 		size++;
 		n = n / 10;
