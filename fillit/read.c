@@ -241,6 +241,48 @@ t_tet	*check_tetris(int argc, char **argv)
 	return (elem);
 }
 
+int		tetsize(t_tet *elem)
+{
+	int i;
+
+	i = 0;
+	while (elem)
+	{
+		i++;
+		elem = elem->next;
+	}
+	return (i);
+}
+
+int		ft_sqrt(int a)
+{
+	float min;
+	float max;
+	float mid;
+
+	min = 0;
+	max = a;
+	while (ABS(max - min) > 0.01)
+	{
+		mid = (max + min) / 2.0;
+		if (mid * mid < (float)a)
+			min = mid;
+		else
+			max = mid;
+	}
+	if ((int)(max - 0.5) == (int)max)
+		return ((int)max + 1);
+	else
+		return ((int)max);
+}
+/*void	solve(t_tet	*elem)
+{
+	char	**res;
+	char	**map;
+	int		size;
+
+	
+}*/
 int	main(int argc, char **argv)
 {
 	t_tet	*elem;
@@ -248,5 +290,5 @@ int	main(int argc, char **argv)
 	elem = check_tetris(argc, argv);
 	if (elem == NULL)
 		return (0);
-	
+	printf("%d", ft_sqrt(10000));
 }
