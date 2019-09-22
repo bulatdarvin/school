@@ -15,8 +15,9 @@
 
 typedef struct		s_tet
 {
-	int				*tet_id;
+	int				tet_id[8];
 	struct s_tet	*next;
+	char			c;
 }					t_tet;
 # include <stdlib.h>
 # include <sys/stat.h>
@@ -44,4 +45,11 @@ typedef struct		s_tet
 # define SA_PAT (int[8]) {0, 0, 0, 1, 1, 1, 1, 2}
 # define Z_PAT (int[8]) {0, 0, 1, 0, 1, 1, 2, 1}
 # define ZA_PAT (int[8]) {1, 0, 0, 1, 1, 1, 0, 2}
+t_tet	*readandgroup(int argc, char **argv);
+//void	init(char *line, int k, t_tet **elem);
+void	ft_push_back(t_tet **begin_list, int *data);
+t_tet	*ft_create_elem(int *data);
+int 	kolvo(char *line);
+int		check(char *line);
+char	*readstr(int fd);
 #endif

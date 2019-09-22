@@ -6,30 +6,12 @@
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:42:34 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/19 15:42:36 by ssilvana         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:56:38 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include <stdio.h>
-
-void		ft_lstrev(t_tet **alst)
-{
-	t_tet	*prev;
-	t_tet	*cur;
-	t_tet	*next;
-
-	prev = NULL;
-	cur = *alst;
-	while (cur != NULL)
-	{
-		next = cur->next;
-		cur->next = prev;
-		prev = cur;
-		cur = next;
-	}
-	*alst = prev;
-}
 
 char	*readstr(int fd)
 {
@@ -51,30 +33,49 @@ char	*readstr(int fd)
 	return (line);
 }
 
-int		check(char *line)
+int 	checkone(char *line)
 {
 	int i;
-	int t;
+	int hash;
+	int dot;
+	int new;
 
 	i = 0;
-	t = 0;
-	while (line[i])
+	hash = 0;
+	dot = 0;
+	new = 0;
+	while (line[i] && i < 20)
 	{
-		while (line[i] && line[i] != '\n' && line[i + 1] != '\n')
-		{
-			while (line[i] && line [i] != '\n')
-			{
-				if (line[i] != '#' && line[i] != '.')
-					return(1);
-				t++;
-				i++;
-			}
-			i++;
-		}
+		if (line[i] == '#')
+			hash++;
+		if (line[i] == '.')
+			dot++;
+		if (line[i] == '\n')
+			new++;
 		i++;
-		if (t != 16 && t != 0 && line[i] != '\0')
+	}
+	if (hash == 4 && dot == 12 && new == 4)
+		return (1);
+	return (0);
+}
+
+int		check(char *line)
+{
+	int add;
+
+	add = 0;
+	while (line[add])
+	{
+		if (!(checkone(ft_strsub(line, add, 20))))
 			return (1);
-		t = 0;
+		add += 19;
+		if (line[add] == '\n' && line[add + 1] == '\0')
+			return (0);
+		if (line[add] == '\n' && line[add + 1] == '\n' &&
+				(line[add + 2] == '#' || line[add + 2] == '.'))
+			add += 2;
+		else
+			return (1);
 	}
 	return (0);
 }
@@ -100,200 +101,152 @@ int 	kolvo(char *line)
 	return (k);
 }
 
-t_tet	*ft_create_elem(int *data)
-{
-	t_tet	*tmp;
-
-	tmp = (t_tet*)malloc(sizeof(t_tet));
-	if (tmp)
-	{
-	//	tmp->tet_id = ft_memalloc(sizeof(data));
-	//	if (tmp->tet_id == 0)
-	//		return (NULL);
-		tmp->tet_id = data;
-		tmp->next = NULL;
-		return (tmp);
-	}
-	else
-		return (NULL);
-}
-
-void	ft_push_back(t_tet **begin_list, int *data)
-{
-	t_tet	*list;
-	static char i = 'a';
-	int k = 0;
-
-	if (*begin_list)
-	{
-		list = *begin_list;
-		while (list->next)
-		{
-			ft_putnbr(k);
-			list = list->next;
-			k++;
-		}
-		list->next = ft_create_elem(data);
-		list->c = i;
-	}
-	else
-	{
-		*begin_list = ft_create_elem(data);
-		(*begin_list)->c = i;
-	}
-	i++;
-}
-
-t_tet	*init(char *line, int k, t_tet *elem)
+void	set_tetris(t_tet **elem, char *s)
 {
 	int i;
-	int x;
-	int y;
-	int t;
-	int *a;
-	t_tet *head;
+	int j;
 
 	i = 0;
-	x = 0;
-	y = 0;
-	t = 0;
-	a = ft_memalloc(32);
-//	if (a == 0)
-//		return (0);
-	while (i < ft_strlen(line))
+	j = 0;
+	while (s[i] != '\0')
 	{
-		while (line[i] && line[i] != '\n' && line[i + 1] != '\n')
+		if (s[i] == '#')
 		{
-			while (line[i] && line [i] != '\n')
-			{
-				if (line[i] == '#')
-				{
-					a[t++] = x;
-					a[t++] = y;
-				//	ft_putnbr(a[t - 2]);
-				//	ft_putchar(' ');
-				//	ft_putnbr(a[t - 1]);
-				//	ft_putchar('\n');
-				}
-				x++;
-				i++;
-			}
-			x = 0;
-			y++;
-			i++;
+			(*elem)->tet_id[j] = i % 5;
+			j++;
+			(*elem)->tet_id[j] = i / 5;
+			j++;
 		}
-	//	ft_putchar('\n');
-		ft_push_back(&elem, a);
-		//if (i == 20)
-		//	head = elem;
-		//else
-		//	head->next = elem;
-		y = 0;
-		t = 0;
 		i++;
 	}
-	free(a);
-	ft_lstrev(&elem);
-	return (elem);
+
 }
 
-int		warn()
+t_tet	*init(char *line, int k)
 {
-	ft_putstr("error");
-	return (0);
+	int		c;
+	int		add;
+	t_tet	*tmp;
+	t_tet	*head;
+
+	add = 0;
+	c = 'A';
+	if (!(head = (t_tet*)malloc(sizeof(t_tet))))
+		return (NULL);
+	tmp = head;
+	while (k > 0)
+	{
+		tmp->c = c;
+		set_tetris(&tmp, ft_strsub(line, add, 20));
+		if (k - 1 != 0)
+			if (!(tmp->next = (t_tet*)malloc(sizeof(t_tet))))
+				return (NULL);
+		tmp = tmp->next;
+		k--;
+		c++;
+		add += 21;
+	}
+	return (head);
 }
 
-
-int		*shift(int *a)
+void	shift(t_tet *elem)
 {
 	int i;
 	int y;
 	int x;
 
 	i = 3;
-	y = a[1];
-	x = a[0];
+	y = elem->tet_id[1];
+	x = elem->tet_id[0];
 	while (i < 8)
 	{
-		if (y > a[i] && i % 2 == 1)
-			y = a[i];
-		if (x > a[i] && i % 2 == 0)
-			x = a[i];
+		if (y > elem->tet_id[i] && i % 2 == 1)
+			y = elem->tet_id[i];
+		if (x > elem->tet_id[i] && i % 2 == 0)
+			x = elem->tet_id[i];
 		i = i + 2;
 	}
 	i = 0;
 	while (i < 8)
 	{
 		if (i % 2 == 0)
-			a[i] = a[i] - x;
+			elem->tet_id[i] = elem->tet_id[i] - x;
 		else
-			a[i] = a[i] - y;
-		i = i + 2;
+			elem->tet_id[i] = elem->tet_id[i] - y;
+		i++;
 	}
-	return (a);
 }
 
-void		checkpatterns(t_tet **begin)
+int		patterns(int a[8])
+{
+	if (a == I_PAT || a == IH_PAT || a == O_PAT)
+		return (0);
+	if (a == L_PAT || a == LA_PAT || a == LB_PAT)
+		return (0);
+	if (a == LC_PAT || a == J_PAT || a == JA_PAT)
+		return (0);
+	if (a == JB_PAT || a == JC_PAT || a == T_PAT)
+		return (0);
+	if (a == TA_PAT || a == TB_PAT || a == TC_PAT)
+		return (0);
+	if (a == S_PAT || a == SA_PAT || a == Z_PAT)
+		return (0);
+	if (a == ZA_PAT)
+		return (0);
+	else
+		return (1);
+}
+int		checkpatterns(t_tet **begin)
 {
 	t_tet	*tmp;
-	t_tet	*elem;
-	int		x;
-	int		y;
-	int i = 0;
 
 	tmp = *begin;
-/*	while (tmp)
+	while (tmp)
 	{
-		tmp->tet_id = shift(tmp->tet_id);
+		shift(tmp);
+		if (patterns(tmp->tet_id))
+			return (1);
 		tmp = tmp->next;
 	}
-*/	elem = *begin;
-	while (elem)
-	{
-		while (i < 8)
-		{
-			printf("%d\n", elem->tet_id[i]);
-			i++;
-		}
-		printf("\n");
-		i = 0;
-		elem = elem->next;
-	}
+	return (0);
 }
 
-int		main(int argc, char **argv)
+t_tet	*warn()
+{
+	ft_putstr("error");
+	return (NULL);
+}
+
+t_tet	*check_tetris(int argc, char **argv)
 {
 	char	*line;
 	int		fd;
 	int		k;
-	int		*a;
 	t_tet	*elem;
-	t_tet	*head;
 
 	if (argc != 2)
-		return (0);	//razobratsia chto takoe usage
+	{
+		ft_putstr("usage: fillit input_file\n");
+		return (NULL);	//razobratsia chto takoe usage
+	}
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (warn());
 	line = readstr(fd);
 	if (check(line) == 1 || line[0] == '\0')
-	{
-		ft_putstr("error");
+		return (warn());
+	elem = init(line, kolvo(line));
+	if (!checkpatterns(&elem))
+		return (warn());
+	return (elem);
+}
+
+int	main(int argc, char **argv)
+{
+	t_tet	*elem;
+
+	elem = check_tetris(argc, argv);
+	if (elem == NULL)
 		return (0);
-	}
-	k = kolvo(line);
-	head = init(line, k, elem);
-	int i = 0;
-	while (head)
-	{
-		while (i < 8)
-		{
-			printf("%d\n", head->tet_id[i]);
-			i++;
-		}
-		printf("         %c\n\n", head->c);
-		i = 0;
-		head = head->next;
-	}
-	return (0);
+	
 }
