@@ -6,7 +6,7 @@
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 15:42:34 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/22 17:56:38 by ssilvana         ###   ########.fr       */
+/*   Updated: 2019/09/23 18:17:00 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,20 +275,214 @@ int		ft_sqrt(int a)
 	else
 		return ((int)max);
 }
-/*void	solve(t_tet	*elem)
+
+void	ft_memdeltab(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	//ft_memdel((void**)tab);
+}
+
+
+
+//                              RESHENIE TETRISA            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+char	**insert_tetris(char **map, int size, t_tet *elem)
+{
+	int	x;
+	int i;
+	int	y;
+
+	y = 0;
+	i = 0;
+	while (y < size)
+	{
+		x = 0;
+		while (x < size)
+		{
+		//	printf("      x: %d   y: %d\n", x, y);
+		//	printf("      elemx: %d   elemy: %d\n", elem->tet_id[i], elem->tet_id[i + 1]);
+			if (elem->tet_id[i] == x && elem->tet_id[i + 1] == y)
+			{
+				map[y][x] = elem->c;
+				i = i + 2;
+			}
+			x++;
+		}
+		y++;
+	}
+	return (map);
+}
+
+void	help_to_insert(t_tet *elem, int x, int y)
+{
+	int i;
+
+	i = 0;
+	shift(elem);
+	while (i < 8)
+	{
+		elem->tet_id[i] = elem->tet_id[i] + x;
+		elem->tet_id[i + 1] = elem->tet_id[i + 1] + y;
+		i = i + 2;
+	}
+}
+
+int		check_map(t_tet	*elem, char	**map, int size)
+{
+	int	x;
+	int	y;
+	int i;
+
+	y = 0;
+	i = 0;
+	while(y < size)
+	{
+		x = 0;
+		while (x < size)
+		{
+			if (elem->tet_id[i] < size && elem->tet_id[i + 1] < size
+					&& map[elem->tet_id[i + 1]][elem->tet_id[i]] == '.')
+			{
+				i = i + 2;
+				if (i == 8)
+					return (1);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+void	remove_tetris(char **map, int size, char a)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (y < size)
+	{
+		x = 0;
+		while (x < size)
+		{
+			if (map[y][x] == a)
+				map[y][x] = '.';
+			x++;
+		}
+		y++;
+	}
+}
+char	**algorit(char **map, int size, t_tet *elem)
+{
+	int		x;
+	int		y;
+	char	**tetris;
+	int i = 0;
+
+	y = 0;
+	if (elem == NULL)
+		return (map);
+	tetris = NULL;
+	while (y < size)
+	{
+		x = 0;
+		while (x < size)
+		{
+			help_to_insert(elem, x, y);
+			i = 0;
+			while (i < 8)
+			{
+				printf("%d  ", elem->tet_id[i]);
+				i++;
+			}
+			printf("\n");
+			if (check_map(elem, map, size))
+				tetris = algorit(insert_tetris(map, size, elem),
+					   size, elem->next);
+			if (tetris != NULL)
+				return (tetris);
+			remove_tetris(map, size, elem->c); 
+			x++;
+		}
+		y++;
+	}
+	return (NULL);
+}
+
+
+char	**create_map(int size)
+{
+	char	**map;
+	int		i;
+	int		j;
+
+	i = 0;
+	if(!(map = (char**)malloc(sizeof(char*) * (size + 1))))
+		return (NULL);
+	while (i < size)
+	{
+		if (!(map[i] = (char*)malloc(sizeof(char) * (size + 1))))
+		{
+			while (i-- > 0)
+				free(map[i]);
+			ft_memdel((void**)map);
+			return (NULL);
+		}
+		j = -1;
+		while (j++ < size - 1)
+			map[i][j] = '.';
+		map[i][j] = '\0';
+		i++;
+	}
+	map[i] = NULL;
+	return (map);
+}
+
+char	**solve(t_tet	*elem)
 {
 	char	**res;
 	char	**map;
 	int		size;
-
 	
-}*/
+	size = ft_sqrt(4 * tetsize(elem));
+	if(!(map = create_map(size)))
+		return (NULL);
+	while (!(res = algorit(map, size, elem)))
+	{
+		printf("size: %d\n", size);
+		size++;
+		ft_memdeltab(map);
+		if(!(map = create_map(size)))
+			return (NULL);
+	}
+	return (res);
+}
+
 int	main(int argc, char **argv)
 {
 	t_tet	*elem;
+	char **map;
+	int i = 0;
 
 	elem = check_tetris(argc, argv);
 	if (elem == NULL)
 		return (0);
-	printf("%d", ft_sqrt(10000));
+	map = solve(elem);
+	i = 0;
+	while (map[i])
+	{
+		printf("%s\n", map[i]);
+		i++;
+	}
 }

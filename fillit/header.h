@@ -12,7 +12,7 @@
 
 #ifndef HEADER_H
 # define HEADER_H
-
+# define ABS(x) ((x < 0) ? (-x):(x))
 typedef struct		s_tet
 {
 	int				tet_id[8];
