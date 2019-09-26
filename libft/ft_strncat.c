@@ -12,19 +12,19 @@
 
 #include "libft.h"
 
-char	*ft_strncat(char *dest, const char *src, size_t nb)
+char	*ft_strncat(char *s1, const char *s2, size_t n)
 {
 	size_t i;
 	size_t k;
 
 	i = 0;
-	k = ft_strlen(dest);
-	while (src[i] != '\0' && i != nb)
+	k = ft_strlen(s1);
+	while (s2[i] != '\0' && i != n)
 	{
-		dest[k] = src[i];
+		s1[k] = s2[i];
 		k++;
 		i++;
 	}
-	dest[k] = '\0';
-	return (dest);
+	s1[k] = '\0';
+	return (s1);
 }

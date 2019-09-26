@@ -45,11 +45,25 @@ typedef struct		s_tet
 # define SA_PAT (int[8]) {0, 0, 0, 1, 1, 1, 1, 2}
 # define Z_PAT (int[8]) {0, 0, 1, 0, 1, 1, 2, 1}
 # define ZA_PAT (int[8]) {1, 0, 0, 1, 1, 1, 0, 2}
-t_tet	*readandgroup(int argc, char **argv);
-//void	init(char *line, int k, t_tet **elem);
-void	ft_push_back(t_tet **begin_list, int *data);
-t_tet	*ft_create_elem(int *data);
-int 	kolvo(char *line);
-int		check(char *line);
 char	*readstr(int fd);
+int 	check_one(char *line);
+int		check(char *line);
+int 	amount(char *line);
+void	set_tetris(t_tet **elem, char *s);
+t_tet	*init(char *line, int k);
+void	shift(t_tet *elem);
+int		patterns(int a[8]);
+int		check_patterns(t_tet **begin);
+t_tet	*warn();
+t_tet	*check_tetris(int argc, char **argv);
+int		tetris_size(t_tet *elem);
+int		ft_sqrt(int a);
+void	ft_memdeltab(char **tab);
+char	**insert_tetris(char **map, int size, t_tet *elem);
+void	help_to_insert(t_tet *elem, int x, int y);
+int		check_map(t_tet	*elem, char	**map, int size);
+void	remove_tetris(char **map, int size, char a);
+char	**algoritm(char **map, int size, t_tet *elem);
+char	**create_map(int size);
+char	**solve(t_tet	*elem);
 #endif

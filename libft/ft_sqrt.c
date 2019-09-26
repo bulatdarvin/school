@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 21:25:19 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/03 21:58:30 by ssilvana         ###   ########.fr       */
+/*   Created: 2019/09/26 12:43:58 by ssilvana          #+#    #+#             */
+/*   Updated: 2019/09/26 13:02:29 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+int		ft_sqrt(int a)
 {
-	size_t i;
-	size_t t;
+	float min;
+	float max;
+	float mid;
 
-	i = 0;
-	t = 0;
-	if (*needle == 0)
-		return ((char*)haystack);
-	while (haystack[t] != '\0' && t != len)
+	min = 0;
+	max = a;
+	while (ABS(max - min) > 0.01)
 	{
-		if (haystack[t] == needle[0])
-		{
-			i = 0;
-			while (haystack[t + i] == needle[i] && needle[i] && t + i < len)
-				i++;
-			if (needle[i] == '\0')
-				return ((char*)(haystack + t));
-		}
-		t++;
+		mid = (max + min) / 2.0;
+		if (mid * mid < (float)a)
+			min = mid;
+		else
+			max = mid;
 	}
-	return (NULL);
+	if ((int)(max - 0.5) == (int)max)
+		return ((int)max + 1);
+	else
+		return ((int)max);
 }

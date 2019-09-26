@@ -12,20 +12,20 @@
 
 #include "libft.h"
 
-char	*ft_strdup(const char *src)
+char	*ft_strdup(const char *s1)
 {
 	char	*a;
 	int		i;
 	int		len;
 
 	i = 0;
-	len = ft_strlen(src);
+	len = ft_strlen(s1);
 	a = ft_strnew(len);
 	if (a == 0)
 		return (NULL);
-	while (src[i] != '\0')
+	while (s1[i] != '\0')
 	{
-		a[i] = src[i];
+		a[i] = s1[i];
 		i++;
 	}
 	a[i] = '\0';
