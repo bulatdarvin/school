@@ -99,7 +99,6 @@ t_tet	*check_tetris(int argc, char **argv)
 	char	*line;
 	int		fd;
 	t_tet	*elem;
-	int		a;
 
 	if (argc != 2)
 	{
@@ -113,8 +112,7 @@ t_tet	*check_tetris(int argc, char **argv)
 	if (check(line) == 1 || line[0] == '\0')
 		return (warn());
 	elem = init(line, amount(line));
-	a = check_patterns(&elem);
-	if (a == 1)
+	if ((check_patterns(&elem)) == 1)
 		return (warn());
 	return (elem);
 }
