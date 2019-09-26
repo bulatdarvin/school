@@ -6,7 +6,7 @@
 /*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 13:13:44 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/09/26 13:13:49 by ssilvana         ###   ########.fr       */
+/*   Updated: 2019/09/26 22:04:23 by ssilvana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*readstr(int fd)
 
 t_tet	*warn(void)
 {
-	ft_putstr("error");
+	ft_putstr("error\n");
 	return (NULL);
 }
 
