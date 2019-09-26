@@ -59,3 +59,17 @@ char	**algoritm(char **map, int size, t_tet *elem)
 	}
 	return (NULL);
 }
+
+int		compare(int a[8], int b[8])
+{
+	int i;
+
+	i = 0;
+	while (i < 8)
+	{
+		if (a[i] != b[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}

@@ -67,4 +67,5 @@ char				**create_map(int size);
 char				**solve(t_tet	*elem);
 void				ft_memdeltab(char **tab);
 t_tet				*warn(void);
+int					compare(int a[8], int b[8]);
 #endif

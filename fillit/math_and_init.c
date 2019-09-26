@@ -73,7 +73,7 @@ void	shift(t_tet *elem)
 	int y;
 	int x;
 
-	i = 3;
+	i = 2;
 	y = elem->tet_id[1];
 	x = elem->tet_id[0];
 	while (i < 8)
@@ -82,7 +82,7 @@ void	shift(t_tet *elem)
 			y = elem->tet_id[i];
 		if (x > elem->tet_id[i] && i % 2 == 0)
 			x = elem->tet_id[i];
-		i = i + 2;
+		i++;
 	}
 	i = 0;
 	while (i < 8)

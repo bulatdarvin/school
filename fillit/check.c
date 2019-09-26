@@ -61,19 +61,19 @@ int		check(char *line)
 
 int		patterns(int a[8])
 {
-	if (a == I_PAT || a == IH_PAT || a == O_PAT)
+	if (compare(a, I_PAT) || compare(a, IH_PAT) || compare(a, O_PAT))
 		return (0);
-	if (a == L_PAT || a == LA_PAT || a == LB_PAT)
+	else if (compare(a, L_PAT) || compare(a, LA_PAT) || compare(a, LB_PAT))
 		return (0);
-	if (a == LC_PAT || a == J_PAT || a == JA_PAT)
+	else if (compare(a, LC_PAT) || compare(a, J_PAT) || compare(a, JA_PAT))
 		return (0);
-	if (a == JB_PAT || a == JC_PAT || a == T_PAT)
+	else if (compare(a, JB_PAT) || compare(a, JC_PAT) || compare(a, T_PAT))
 		return (0);
-	if (a == TA_PAT || a == TB_PAT || a == TC_PAT)
+	else if (compare(a, TA_PAT) || compare(a, TB_PAT) || compare(a, TC_PAT))
 		return (0);
-	if (a == S_PAT || a == SA_PAT || a == Z_PAT)
+	else if (compare(a, S_PAT) || compare(a, SA_PAT) || compare(a, Z_PAT))
 		return (0);
-	if (a == ZA_PAT)
+	else if (compare(a, ZA_PAT))
 		return (0);
 	else
 		return (1);
@@ -99,6 +99,7 @@ t_tet	*check_tetris(int argc, char **argv)
 	char	*line;
 	int		fd;
 	t_tet	*elem;
+	int		a;
 
 	if (argc != 2)
 	{
@@ -112,7 +113,8 @@ t_tet	*check_tetris(int argc, char **argv)
 	if (check(line) == 1 || line[0] == '\0')
 		return (warn());
 	elem = init(line, amount(line));
-	if (!check_patterns(&elem))
+	a = check_patterns(&elem);
+	if (a == 1)
 		return (warn());
 	return (elem);
 }
