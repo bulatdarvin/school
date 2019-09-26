@@ -13,18 +13,6 @@
 #ifndef HEADER_H
 # define HEADER_H
 # define ABS(x) ((x < 0) ? (-x):(x))
-typedef struct		s_tet
-{
-	int				tet_id[8];
-	struct s_tet	*next;
-	char			c;
-}					t_tet;
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include "libft/libft.h"
 # define BUFF_SIZE 8
 # define I_PAT (int[8]) {0, 0, 0, 1, 0, 2, 0, 3}
 # define IH_PAT (int[8]) {0, 0, 1, 0, 2, 0, 3, 0}
@@ -45,25 +33,38 @@ typedef struct		s_tet
 # define SA_PAT (int[8]) {0, 0, 0, 1, 1, 1, 1, 2}
 # define Z_PAT (int[8]) {0, 0, 1, 0, 1, 1, 2, 1}
 # define ZA_PAT (int[8]) {1, 0, 0, 1, 1, 1, 0, 2}
-char	*readstr(int fd);
-int 	check_one(char *line);
-int		check(char *line);
-int 	amount(char *line);
-void	set_tetris(t_tet **elem, char *s);
-t_tet	*init(char *line, int k);
-void	shift(t_tet *elem);
-int		patterns(int a[8]);
-int		check_patterns(t_tet **begin);
-t_tet	*warn();
-t_tet	*check_tetris(int argc, char **argv);
-int		tetris_size(t_tet *elem);
-int		ft_sqrt(int a);
-void	ft_memdeltab(char **tab);
-char	**insert_tetris(char **map, int size, t_tet *elem);
-void	help_to_insert(t_tet *elem, int x, int y);
-int		check_map(t_tet	*elem, char	**map, int size);
-void	remove_tetris(char **map, int size, char a);
-char	**algoritm(char **map, int size, t_tet *elem);
-char	**create_map(int size);
-char	**solve(t_tet	*elem);
+# include <stdlib.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include "libft/libft.h"
+
+typedef struct		s_tet
+{
+	int				tet_id[8];
+	struct s_tet	*next;
+	char			c;
+}					t_tet;
+
+char				*readstr(int fd);
+int					check_one(char *line);
+int					check(char *line);
+int					amount(char *line);
+void				set_tetris(t_tet **elem, char *s);
+t_tet				*init(char *line, int k);
+void				shift(t_tet *elem);
+int					patterns(int a[8]);
+int					check_patterns(t_tet **begin);
+t_tet				*check_tetris(int argc, char **argv);
+int					tetris_size(t_tet *elem);
+char				**insert_tetris(char **map, int size, t_tet *elem);
+void				help_to_insert(t_tet *elem, int x, int y);
+int					check_map(t_tet	*elem, char	**map, int size);
+void				remove_tetris(char **map, int size, char a);
+char				**algoritm(char **map, int size, t_tet *elem);
+char				**create_map(int size);
+char				**solve(t_tet	*elem);
+void				ft_memdeltab(char **tab);
+t_tet				*warn(void);
 #endif

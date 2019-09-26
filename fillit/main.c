@@ -32,7 +32,7 @@ char	*readstr(int fd)
 	return (line);
 }
 
-t_tet	*warn()
+t_tet	*warn(void)
 {
 	ft_putstr("error");
 	return (NULL);
@@ -41,12 +41,12 @@ t_tet	*warn()
 int		main(int argc, char **argv)
 {
 	t_tet	*elem;
-	char **map;
-	int i = 0;
+	char	**map;
+	int		i;
 
 	elem = check_tetris(argc, argv);
 	if (elem == NULL)
-		exit (1);
+		return (0);
 	map = solve(elem);
 	i = 0;
 	while (map[i])

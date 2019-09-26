@@ -12,7 +12,7 @@
 
 #include "header.h"
 
-int 	check_one(char *line)
+int		check_one(char *line)
 {
 	int i;
 	int hash;

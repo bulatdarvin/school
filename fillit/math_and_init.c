@@ -46,7 +46,7 @@ char	**create_map(int size)
 	int		j;
 
 	i = 0;
-	if(!(map = (char**)malloc(sizeof(char*) * (size + 1))))
+	if (!(map = (char**)malloc(sizeof(char*) * (size + 1))))
 		return (NULL);
 	while (i < size)
 	{
@@ -108,7 +108,7 @@ int		tetris_size(t_tet *elem)
 	return (i);
 }
 
-int 	amount(char *line)
+int		amount(char *line)
 {
 	int k;
 	int i;
@@ -119,7 +119,7 @@ int 	amount(char *line)
 	{
 		while (line[i] && line[i] != '\n' && line[i + 1] != '\n')
 		{
-			while (line[i] && line [i] != '\n')
+			while (line[i] && line[i] != '\n')
 				i++;
 			i++;
 		}

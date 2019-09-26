@@ -51,7 +51,7 @@ void	help_to_insert(t_tet *elem, int x, int y)
 	}
 }
 
-int		check_map(t_tet	*elem, char	**map, int size)
+int		check_map(t_tet *elem, char **map, int size)
 {
 	int	x;
 	int	y;
@@ -59,7 +59,7 @@ int		check_map(t_tet	*elem, char	**map, int size)
 
 	y = 0;
 	i = 0;
-	while(y < size)
+	while (y < size)
 	{
 		x = 0;
 		while (x < size)
@@ -115,5 +115,4 @@ void	set_tetris(t_tet **elem, char *s)
 		}
 		i++;
 	}
-
 }
