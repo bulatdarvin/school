@@ -15,5 +15,5 @@
 int main()
 {
 	char a = 'A';
-	printf("%0.c", a);
+	printf("%c", a);
 }

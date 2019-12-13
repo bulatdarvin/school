@@ -1,19 +1,114 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   float.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/13 17:38:56 by ssilvana          #+#    #+#             */
-/*   Updated: 2019/10/13 17:38:59 by ssilvana         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 #include <stdlib.h>
 #include <stdarg.h>
 #include <math.h>
 #include "struct.h"
 
+int     type_c(va_list arg, t_flags *flag)
+{
+    int width;
+    int c;
+
+    c = va_arg(arg, int);
+    width = 0;
+    if (flag->width)
+    {
+        if (flag->minus)
+            ft_write(&c, 1, flag);
+        while (width++ < flag->width - 1)
+            ft_write((flag->zero && !flag->minus) ? "0" : " ", 1, flag);
+    }
+    else
+        ft_write(&c, 1, flag);
+    return (flag->width ? width : 1);
+}
+
+int     calc_len(double c, int *size)
+{
+    int mod;
+
+    mod = 1;
+    while ((int)(c / 10) != 0)
+    {
+        c = c / 10;
+        (*size)++;
+        mod = mod * 10; 
+    }
+    return (mod);
+}
+
+void    handle_main(double *nb, char **str, int *i, int mod)
+{
+    char *s;
+
+    s = *str;
+    s = ft_strcat(s,ft_itoa((int)*nb));
+    *nb = *nb - (int)*nb;
+    i = i + ft_strlen(s);
+    *str = s;
+}
+
+void    handle_point(double nb, char **str, int *i, int precision)
+{
+    int tmp;
+    char *s;
+
+    s = *str;
+    s[(*i)++] = '.';
+    while (precision > 0)
+    {
+        nb *= 10;
+        if ((int)nb == 9)
+            tmp = (int)nb;
+        else
+            tmp = (int)(nb + 0.1);
+        s[(*i)++] = tmp + '0';
+        nb = nb - tmp;
+        precision--;
+    }
+}
+
+int     float_string(double nb, char **s, int precision)
+{
+    int mod;
+    int neg;
+    int size;
+    char *str;
+    int i;
+
+    neg = 0;
+    i = 0;
+    size = 1;
+    if (nb < 0 && size++)
+    {
+        nb = -nb;
+        neg = 1;
+    }
+    mod = calc_len(nb, &size);
+    if (!(str = ft_strnew(size + precision + 1)))
+        return (0);
+    if (neg)
+        str[i++] = '-';
+    handle_main(&nb, &str, &i, mod);
+    ft_putstr(str);
+    ft_putchar('\n');
+    printf("\n%f\n", nb);
+    handle_point(nb, &str, &i, precision);
+    ft_putstr(str);
+    *s = str;
+    return (size + precision);    
+}
+
+int     type_f(va_list arg, t_flags *flag)
+{
+    int size;
+    char *nb;
+
+    if (flag->precision <= 0)
+        flag->precision = 7;
+    size = float_string(va_arg(arg, double), &nb, flag->precision);
+    ft_write(nb, size, flag);
+    return (size);
+}
 
 int		ft_write(void *s, int size, t_flags *flag)
 {
@@ -200,6 +295,7 @@ int		handle(char **str, va_list arg, t_flags *flag)
 	int	found;
 
 	init_flags(flag);
+    found = 0;
 	while(**str)
 	{
 		found = 0;
@@ -232,8 +328,17 @@ int		ft_printf(const char *format, ...)
 			bytes += handle(&str, argc, &flags);
 		}
 		else
-			bytes += write_until(&str, &flags);
-	
+			bytes += write_until(&str, &flags);	
 	va_end(argc);
 	return (1);
+}
+
+int main()
+{
+	double a = 100.123456789;
+	//int size = 1;
+	//char *s;
+	//size = float_string(a, &s, 15);
+	ft_printf("%f", a);
+
 }
