@@ -6,7 +6,7 @@
 #    By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 20:10:22 by ssilvana          #+#    #+#              #
-#    Updated: 2019/09/26 13:18:11 by ssilvana         ###   ########.fr        #
+#    Updated: 2019/12/22 17:27:40 by ssilvana         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,8 @@ FUNC_NAME = ft_memset \
 	  ft_lstiter \
 	  ft_lstmap \
 	  ft_sqrt \
-	  ft_memdeltab
+	  ft_memdeltab \
+	  ft_itoa_base
 
 
 SRC = $(addsuffix .c, $(FUNC_NAME))
