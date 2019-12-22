@@ -12,8 +12,10 @@
 
 #ifndef STRUCT_H
 # define STRUCT_H
-# define BUFF_SIZE 2048
-# define ARG_CNT 2  // 21
+# define BUFF_SIZE 1024
+# define MAX 4294967295
+# define ARG_CNT 9 // 21
+# define FT_ABS(x) ((x < 0) ? (-x):(x))
 # define LENGTH_HH 1
 # define LENGTH_H 2
 # define LENGTH_LL 4
@@ -61,16 +63,23 @@ int		write_until(char **str, t_flags *flag);
 int		ft_write(void *s, int size, t_flags *flag);
 int		type_c(va_list arg, t_flags *flag);
 int		type_f(va_list arg, t_flags *flag);
+int     type_d(va_list arg, t_flags *flag);
+int 	type_s(va_list arg, t_flags *flag);
+int		type_u(va_list arg, t_flags *flag);
+int		type_o(va_list arg, t_flags *flag);
+int		type_x(va_list arg, t_flags *flag);
+int		type_x_upper(va_list arg, t_flags *flag);
 int     calc_len(double c, int *size);
 void    handle_main(double *nb, char **str, int *i, int mod);
 void    handle_point(double nb, char **str, int *i, int precision);
 int     float_string(double nb, char **s, int precision);
 
+
 t_types	types[ARG_CNT] = {
-	{'c', type_c}, /*{'C', type_c_upper}, {'s', type_s}, {'S', type_s_upper},
-	{'d', type_d}, {'i', type_d}, {'%', type_percentage}, {'p', type_p},
-	{'o', type_o}, {'x', type_x}, {'X', type_x_upper}, {'u', type_u},
+	{'c', type_c}, {'d', type_d}, {'i', type_d}, {'s', type_s}, {'u', type_u}, 
+	{'o', type_o}, {'x', type_x}, {'X', type_x_upper}, {'f', type_f}/*{'C', type_c_upper}, {'S', type_s_upper},
+	 {'%', type_percentage}, {'p', type_p},
 	{'D', type_d_upper}, {'O', type_o_upper}, {'U', type_u_upper},
-	{'a', type_a}, {'A', type_a_upper}, {'b', type_b}, {'n', type_n}*/ {'f', type_f}
+	{'a', type_a}, {'A', type_a_upper}, {'b', type_b}, {'n', type_n}*/ 
 };
 #endif

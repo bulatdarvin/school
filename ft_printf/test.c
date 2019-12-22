@@ -3,23 +3,150 @@
 #include <math.h>
 #include "struct.h"
 
+intmax_t	ft_get_nb(va_list args, t_flags flags)
+{
+	intmax_t	nbr;
+
+	nbr = va_arg(args, intmax_t);
+	if (flags.length_type == LENGTH_HH)
+		nbr = (char)nbr;
+	else if (flags.length_type == LENGTH_H)
+		nbr = (short int)nbr;
+	else if (flags.length_type == LENGTH_L)
+		nbr = (long int)nbr;
+	else if (flags.length_type == LENGTH_LL)
+		nbr = (long long int)nbr;
+	else if (flags.length_type == LENGTH_J)
+		nbr = (intmax_t)nbr;
+	else if (flags.length_type == LENGTH_Z)
+		nbr = (size_t)nbr;
+	else
+		nbr = (int)nbr;
+	return (nbr);
+}
+
+int		type_u(va_list arg, t_flags *flag)
+{
+	uintmax_t nb;
+	int precision;
+	char *a;
+	char *tmp;
+	int i;
+
+	nb = ft_get_nb(arg, *flag);
+	a = ft_itoa_base(nb, 10);
+	precision = flag->precision - ft_strlen(a);
+	i = 0;
+	tmp = ft_strnew(precision);
+	while (i < precision)
+	{
+		tmp[i] = '0';
+		i++;
+	}
+	ft_strcat(tmp, a);
+	flag->zero = 0;
+	i = ft_write(tmp, ft_strlen(tmp), flag);
+	return (i);
+}
+
+int		type_x(va_list arg, t_flags *flag)
+{
+	intmax_t nb;
+	int i;
+	char *a;
+	int size;
+
+	nb = ft_get_nb(arg, *flag);
+	if (nb < 0)
+		nb = MAX - FT_ABS(nb) + 1;
+	a = ft_itoa_base(nb, 16);
+	i = 0;
+	while (i < ft_strlen(a))
+	{
+		a[i] = ft_tolower(a[i]);
+		i++;
+	}
+	size = ft_write(a, ft_strlen(a), flag);
+	return (size);	
+}
+
+int		type_x_upper(va_list arg, t_flags *flag)
+{
+	intmax_t nb;
+	char *a;
+	int size;
+
+	nb = ft_get_nb(arg, *flag);
+	if (nb < 0)
+		nb = MAX - FT_ABS(nb) + 1;
+	a = ft_itoa_base(nb, 16);
+	size = ft_write(a, ft_strlen(a), flag);
+	return (size);
+
+}
+
+int		type_o(va_list arg, t_flags *flag)
+{
+	intmax_t nb;
+	int size;
+	char *a;
+
+	nb = ft_get_nb(arg, *flag);
+	if (nb < 0)
+		nb = MAX - FT_ABS(nb) + 1;
+	a = ft_itoa_base(nb, 8);
+	size = ft_write(a, ft_strlen(a), flag);
+	return (size);		
+}
+
+int 	type_s(va_list arg, t_flags *flag)
+{
+	char *a;
+	int size;
+
+	a = va_arg(arg, char*);
+	if (flag->precision > 0 && flag->precision < ft_strlen(a))
+		size = flag->precision;
+	else
+		size = ft_strlen(a);
+	size = ft_write(a, size, flag);
+	return (size);	
+}
+
+int     type_d(va_list arg, t_flags *flag)
+{
+    int size;
+    int c;
+	char *a;
+	char *tmp;
+	int precision;
+
+    c = ft_get_nb(arg, *flag);
+	a = ft_itoa(c);
+	precision = flag->precision - ft_strlen(a) + (flag->plus ? 1 : 0);
+	if (!(tmp = ft_strnew(precision)))
+		return (0);
+	size = -1;
+	if (flag->plus)
+	{
+		size++;
+		tmp[size] = '+';
+	}
+	while (size++ < precision - 1)
+		tmp[size] = '0';
+	ft_strcat(tmp, a);
+    size = ft_write(tmp, ft_strlen(tmp), flag);
+    return (size);
+}
+
 int     type_c(va_list arg, t_flags *flag)
 {
-    int width;
     int c;
+	int size;
 
     c = va_arg(arg, int);
-    width = 0;
-    if (flag->width)
-    {
-        if (flag->minus)
-            ft_write(&c, 1, flag);
-        while (width++ < flag->width - 1)
-            ft_write((flag->zero && !flag->minus) ? "0" : " ", 1, flag);
-    }
-    else
-        ft_write(&c, 1, flag);
-    return (flag->width ? width : 1);
+	size = ft_write(&c, 1, flag);
+    return (size);
 }
 
 int     calc_len(double c, int *size)
@@ -43,7 +170,6 @@ void    handle_main(double *nb, char **str, int *i, int mod)
     s = *str;
     s = ft_strcat(s,ft_itoa((int)*nb));
     *nb = *nb - (int)*nb;
-    i = i + ft_strlen(s);
     *str = s;
 }
 
@@ -53,17 +179,16 @@ void    handle_point(double nb, char **str, int *i, int precision)
     char *s;
 
     s = *str;
+	nb = nb * 10;
     s[(*i)++] = '.';
-    while (precision > 0)
+    while (precision-- > 0)
     {
-        nb *= 10;
         if ((int)nb == 9)
             tmp = (int)nb;
         else
-            tmp = (int)(nb + 0.1);
+            tmp = (int)(nb + 0.01);
         s[(*i)++] = tmp + '0';
-        nb = nb - tmp;
-        precision--;
+        nb = (nb - tmp)*10;
     }
 }
 
@@ -88,14 +213,11 @@ int     float_string(double nb, char **s, int precision)
         return (0);
     if (neg)
         str[i++] = '-';
-    handle_main(&nb, &str, &i, mod);
-    ft_putstr(str);
-    ft_putchar('\n');
-    printf("\n%f\n", nb);
+    handle_main(&nb, &str, &i, mod);	
+	i = i + ft_strlen(str) - 1;
     handle_point(nb, &str, &i, precision);
-    ft_putstr(str);
     *s = str;
-    return (size + precision);    
+    return (size + precision + 1);    
 }
 
 int     type_f(va_list arg, t_flags *flag)
@@ -110,11 +232,37 @@ int     type_f(va_list arg, t_flags *flag)
     return (size);
 }
 
+void	ft_width(char *str, t_flags *flag, int *i)
+{
+	int width;
+	int k;
+
+	width = 0;
+	k = 0;
+	if (flag->width && flag->width > ft_strlen(str))
+	{
+		if (flag->minus)
+			while (k++ < ft_strlen(str))
+				flag->buffer[flag->bytes++] = str[(*i)++]; 
+		while (width++ < flag->width - ft_strlen(str))
+			flag->buffer[flag->bytes++] = (flag->zero && !flag->minus) ? '0' : ' ';
+		if (!flag->minus)
+			while (k++ < ft_strlen(str))
+				flag->buffer[flag->bytes++] = str[(*i)++]; 
+		flag->width = 0;
+	}
+}
+
 int		ft_write(void *s, int size, t_flags *flag)
 {
 	int		i;
 	char	*str;
+	int		width;
 
+	width = 0;
+	i = 0;
+
+	str = (char*)s;
 	if (flag->bytes + size > BUFF_SIZE)
 	{
 		write(1, flag->buffer, (size_t)flag->bytes);
@@ -125,10 +273,10 @@ int		ft_write(void *s, int size, t_flags *flag)
 			return (size);
 		}
 	}
-	i = 0;
-	str = s;
+	ft_width(str, flag, &i);
 	while (i < size)
 		flag->buffer[flag->bytes++] = str[i++];
+	size += i;
 	flag->total_bytes += size;
 	return (size);
 }
@@ -143,7 +291,7 @@ int		write_until(char **str, t_flags *flag)
 		next = (int)ft_strlen(*str);
 	ft_write(*str, next, flag);
 	*str += next;
-	return (next);	
+	return (next);
 }
 
 void	init_flags(t_flags *flag)
@@ -159,14 +307,14 @@ void	init_flags(t_flags *flag)
 
 int		handle_flags(char **str, t_flags *flag)
 {
-	if (**str == '#')
-		flag->hash = 1;
+	if (**str == '0')
+		flag->zero = 1;
 	else if (**str == '-')
 		flag->minus = 1;
 	else if (**str == '+')
 		flag->plus = 1;
-	else if (**str == '0')
-		flag->zero = 0;
+	else if (**str == '#')
+		flag->hash = 0;
 	else if (**str == ' ')
 		flag->space = 1;
 	else
@@ -252,18 +400,6 @@ int 	handle_length(char **str, t_flags *flag)
 	return (1);
 }
 
-int		ft_pad(t_flags *flag, int size)
-{
-	int width;
-
-	if (flag->width <= 0)
-		return (size);
-	width = 0;
-	while (width++ < flag->width - size)
-		ft_write((flag->zero && !flag->minus) ? "0" : " ", 1, flag);
-	return (size + width - 1);
-}
-
 int		call_type(char **str, va_list args, t_flags *flag)
 {
 	int arg;
@@ -281,12 +417,12 @@ int		call_type(char **str, va_list args, t_flags *flag)
 		arg++;
 	}
 	size = 1;
-	if (flag->minus == 0)
+	/*if (flag->minus == 0)
 		size = ft_pad(flag, size);
 	ft_write(*str, 1, flag);
 	if (flag->minus != 0)
 		size = ft_pad(flag, size);
-	*str += 1;
+	*/*str += 1;
 	return (1);
 }
 
@@ -299,7 +435,7 @@ int		handle(char **str, va_list arg, t_flags *flag)
 	while(**str)
 	{
 		found = 0;
-		while (handle_flags(str, flag) || handle_precision(str, flag, arg) || handle_width(str, flag, arg))
+		while (handle_flags(str, flag) || handle_width(str, flag, arg) || handle_precision(str, flag, arg))
 			found = 1;
 		if (ft_isalpha(**str) || **str == '%')
 			return (call_type(str, arg, flag));
@@ -314,6 +450,7 @@ int		ft_printf(const char *format, ...)
 	va_list argc;
 	t_flags flags;
 	char	*str;
+	int		tmp;
 	int		bytes;
 
 	bytes = 0;
@@ -325,20 +462,32 @@ int		ft_printf(const char *format, ...)
 		if (*str == '%')
 		{
 			str++;
-			bytes += handle(&str, argc, &flags);
+			tmp = handle(&str, argc, &flags);
+			bytes += tmp;
+			if (tmp == 0)
+			{
+				ft_putstr("error");
+				return (0);
+			}
 		}
 		else
-			bytes += write_until(&str, &flags);	
+			bytes += write_until(&str, &flags);
 	va_end(argc);
-	return (1);
+	if (flags.bytes > 0)
+		write(1, flags.buffer, flags.bytes);
+	return (flags.total_bytes);
 }
 
 int main()
 {
-	double a = 100.123456789;
+	double a = -100.123456789;
+	int c = 100;
+	char *b = "abcdef";
 	//int size = 1;
 	//char *s;
 	//size = float_string(a, &s, 15);
-	ft_printf("%f", a);
-
+	ft_printf("%+.5d\n", 11);
+	printf("%+.5d", 11);
+	//printf("%o", -100);
+	//printf("%05d\n", 100);
 }
