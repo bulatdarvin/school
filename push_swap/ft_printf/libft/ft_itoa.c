@@ -12,19 +12,24 @@
 
 #include "libft.h"
 
-static void		zap(char *a, long long n, int size)
+static void		zap(char *a, intmax_t n, int size)
 {
+	int		tmp;
+
 	if (n == 0)
 		a[0] = '0';
-	while (size > 0 && n > 0)
+	while (size > 0 && n != 0)
 	{
-		a[size - 1] = n % 10 + '0';
+		tmp = ABS(n % 10);
+		if (tmp == -8)
+			tmp = 8;
+		a[size - 1] = tmp + '0';
 		n = n / 10;
 		size--;
 	}
 }
 
-static	char	*sozd(int min, int size, long long n)
+static	char	*sozd(int min, int size, intmax_t n)
 {
 	char *a;
 
@@ -34,7 +39,7 @@ static	char	*sozd(int min, int size, long long n)
 		if (a == 0)
 			return (NULL);
 		a[0] = '-';
-		zap(a, n, size + 1);
+		zap(a, n, size);
 	}
 	else
 	{
@@ -46,27 +51,30 @@ static	char	*sozd(int min, int size, long long n)
 	return (a);
 }
 
-char			*ft_itoa(int n)
+int				num_size(intmax_t num)
 {
-	long long	num;
+	int size;
+
+	size = 1;
+	while (num / 10 != 0)
+	{
+		size++;
+		num = num / 10;
+	}
+	return (size);
+}
+
+char			*ft_itoa(intmax_t n)
+{
 	int			size;
 	int			min;
 	char		*a;
 
 	min = 1;
-	size = 1;
-	num = n;
 	if (n < 0)
-	{
-		num = num * (-1);
 		min = -1;
-	}
-	while (n / 10 != 0)
-	{
-		size++;
-		n = n / 10;
-	}
-	a = sozd(min, size, num);
+	size = num_size(n);
+	a = sozd(min, size, n);
 	if (a == 0)
 		return (NULL);
 	return (a);

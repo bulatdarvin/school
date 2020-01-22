@@ -14,6 +14,7 @@
 # define LIBFT_H
 # define ABS(x) ((x < 0) ? (-x):(x))
 # include <string.h>
+# include <inttypes.h>
 
 typedef struct		s_list
 {
@@ -70,7 +71,8 @@ void				ft_putnbr(int n);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *str, char c);
-char				*ft_itoa(int n);
+char				*ft_itoa(intmax_t n);
+char				*ft_itoa_base(uintmax_t n, uintmax_t base);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);

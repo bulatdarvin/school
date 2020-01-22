@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <inttypes.h>
 
-static void		zap(char *a, size_t n, int size, int base)
+static void		zap(char *a, uintmax_t n, int size, uintmax_t base)
 {
 	if (n == 0)
 		a[0] = '0';
@@ -20,43 +21,30 @@ static void		zap(char *a, size_t n, int size, int base)
 	{
 		if (n % base >= 10)
 			a[size - 1] = n % base + 55;
-		else		
+		else
 			a[size - 1] = n % base + '0';
 		n = n / base;
 		size--;
 	}
 }
 
-static	char	*sozd(int min, int size, size_t n, int base)
+static	char	*sozd(int size, uintmax_t n, uintmax_t base)
 {
 	char *a;
 
-	if (min == -1)
-	{
-		a = ft_strnew(size + 1);
-		if (a == 0)
-			return (NULL);
-		a[0] = '-';
-		zap(a, n, size + 1, base);
-	}
-	else
-	{
-		a = ft_strnew(size);
-		if (a == 0)
-			return (NULL);
-		zap(a, n, size, base);
-	}
+	a = ft_strnew(size);
+	if (a == 0)
+		return (NULL);
+	zap(a, n, size, base);
 	return (a);
 }
 
-char			*ft_itoa_base(size_t n, int base)
+char			*ft_itoa_base(uintmax_t n, uintmax_t base)
 {
-	size_t		num;
+	uintmax_t	num;
 	int			size;
-	int			min;
 	char		*a;
 
-	min = 1;
 	size = 1;
 	num = n;
 	while (n / base != 0)
@@ -64,7 +52,7 @@ char			*ft_itoa_base(size_t n, int base)
 		size++;
 		n = n / base;
 	}
-	a = sozd(min, size, num, base);
+	a = sozd(size, num, base);
 	if (a == 0)
 		return (NULL);
 	return (a);
