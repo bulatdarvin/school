@@ -23,4 +23,5 @@ void	ft_memdeltab(char **tab)
 		free(tab[i]);
 		i++;
 	}
+	free(tab);
 }

@@ -81,4 +81,5 @@ void			ft_exit(t_main stack);
 t_main			sort(t_main stack);
 void			print_to_console(t_stack *a, t_stack *b, t_flag *f, char *act);
 void			delet(t_main stack);
+void			delet_stack(t_stack *stack);
 #endif

@@ -72,3 +72,17 @@ int			go_to_head(t_main *stack, int index, char t)
 		num = revrot_until(stack, size - index, t);
 	return (num);
 }
+
+void		delet_stack(t_stack *stack)
+{
+	t_stack *tmp;
+
+	tmp = stack;
+	while (stack)
+	{
+		stack = stack->next;
+		free(tmp);
+		tmp = stack;
+	}
+	free(stack);
+}

@@ -32,6 +32,8 @@ int		main(int argc, char **argv)
 	t_main		stack;
 
 	stack.b = NULL;
+	if ((argc == 2 && ft_isnum(argv[1])) || argc == 1)
+		return (0);
 	if (argc > 2)
 		stack.flag = get_flags(argv);
 	else
@@ -41,12 +43,6 @@ int		main(int argc, char **argv)
 		stack.a = parse(argc, argv, stack);
 		if (stack.a == NULL)
 			ft_exit(stack);
-		if (argc == 2 && lst_size(stack.a) == 1)
-		{
-			delet(stack);
-			free(stack.flag);
-			return (0);
-		}
 		stack = sort(stack);
 		delet(stack);
 		free(stack.flag);

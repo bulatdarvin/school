@@ -87,19 +87,21 @@ int			main(int argc, char **argv)
 	stack.a = NULL;
 	stack.b = NULL;
 	stack.flag = init_flag();
-	if (argc > 2)
+	if (argc >= 2)
 	{
-		stack.a = check_parse(argc, argv, stack);
-		if (stack.a == NULL)
-			ft_exit(stack);
-		checker(stack);
-	}
-	if (argc == 2)
-	{
-		if (ft_isnum(argv[1]))
+		if (argc == 2 && ft_isnum(argv[1]))
+		{
 			ft_putendl("OK");
+			free(stack.flag);
+		}
 		else
-			ft_putendl("Error");
+		{
+			stack.a = check_parse(argc, argv, stack);
+			if (stack.a == NULL)
+				ft_exit(stack);
+			checker(stack);
+		}
 	}
-	free(stack.flag);
+	if (argc < 2)
+		free(stack.flag);
 }
