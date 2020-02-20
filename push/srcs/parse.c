@@ -21,7 +21,10 @@ int			parse_arr(t_stack **stack, char **str, int argc, t_main main)
 	while (i < argc)
 	{
 		if (!ft_isnum(str[i]))
+		{
+			delet_stack(*stack);
 			return (i);
+		}
 		num = ft_atoi(str[i++]);
 		add(stack, num);
 		if (check_duplet(*stack, num))
@@ -45,6 +48,7 @@ int			parse_str(t_stack **stack, char *s)
 	{
 		if (!ft_isnum(str[i]))
 		{
+			delet_stack(*stack);
 			ft_memdeltab(str);
 			return (i);
 		}
@@ -65,24 +69,12 @@ t_stack		*parse(int argc, char **argv, t_main main)
 {
 	t_stack		*stack;
 	int			tmp;
-	t_stack		*t;
 
 	stack = NULL;
 	if (argc == 2)
 		tmp = parse_str(&stack, argv[1]);
 	else
 		tmp = parse_arr(&stack, argv, argc, main);
-	if (tmp != 0)
-	{
-		t = stack;
-		while (stack)
-		{
-			stack = stack->next;
-			free(t);
-			t = stack;
-		}
-		free(stack);
-	}
 	return (tmp == 0 ? stack : NULL);
 }
 

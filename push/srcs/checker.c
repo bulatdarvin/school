@@ -12,19 +12,6 @@
 
 #include "../includes/push_swap.h"
 
-t_stack		*check_parse(int argc, char **argv, t_main main)
-{
-	int			tmp;
-	t_stack		*stack;
-
-	stack = NULL;
-	if (argc == 2)
-		tmp = parse_str(&stack, argv[1]);
-	else
-		tmp = parse_arr(&stack, argv, argc, main);
-	return (tmp == 0 ? stack : NULL);
-}
-
 int			act(char *act, t_stack **a, t_stack **b)
 {
 	if (ft_strequ(act, "ra"))
@@ -54,11 +41,40 @@ int			act(char *act, t_stack **a, t_stack **b)
 	return (1);
 }
 
+void		for_work(t_main stack)
+{
+	char *tmp;
+	char *check;
+
+	if (lst_size(stack.a) > 29 && get_next_line(0, &tmp))
+	{
+		check = ft_itoa(ft_atoi(tmp));
+		tmp = tmp + ft_strlen(check);
+		if (act(tmp, &stack.a, &stack.b) == 0)
+			ft_exit(stack);
+		free(check);
+	}
+}
+
+t_stack		*check_parse(int argc, char **argv, t_main main)
+{
+	int			tmp;
+	t_stack		*stack;
+
+	stack = NULL;
+	if (argc == 2)
+		tmp = parse_str(&stack, argv[1]);
+	else
+		tmp = parse_arr(&stack, argv, argc, main);
+	return (tmp == 0 ? stack : NULL);
+}
+
 void		checker(t_main stack)
 {
 	char	*tmp;
 	t_stack	*t;
 
+	for_work(stack);
 	while (get_next_line(0, &tmp) > 0)
 	{
 		if (act(tmp, &stack.a, &stack.b) == 0)
