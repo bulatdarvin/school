@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_header.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:17:23 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:17:24 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 int		handle_name(char *line, t_asm *data)
@@ -6,7 +18,6 @@ int		handle_name(char *line, t_asm *data)
 	int	start;
 
 	i = 5;
-	ft_putendl("AQRQWR");
 	while (line[i] && line[i] != '"')
 		i++;
 	if (line[i] != '"')
@@ -15,7 +26,7 @@ int		handle_name(char *line, t_asm *data)
 	i++;
 	while (line[i] && line[i] != '"')
 		i++;
-	if (line[i] != '"' /*&& line[i + 1] != 0*/)
+	if (line[i] != '"')
 		return (0);
 	data->name = ft_strsub(line, start, i - start);
 	if (ft_strlen(data->name) > PROG_NAME_LENGTH)
@@ -36,7 +47,7 @@ int		read_all_comment(t_asm *data, int fd)
 		{
 			*position = 0;
 			data->comment = ft_strjoin(data->comment, tmp);
-			return((ft_strlen(data->comment) < COMMENT_LENGTH));
+			return ((ft_strlen(data->comment) < COMMENT_LENGTH));
 		}
 		to_add = ft_strjoin(tmp, "\n");
 		buf = data->comment;
@@ -46,6 +57,7 @@ int		read_all_comment(t_asm *data, int fd)
 		ft_strdel(&tmp);
 		ft_strdel(&buf);
 	}
+	return (1);
 }
 
 int		handle_comment(char *line, t_asm *data, int fd)
@@ -69,10 +81,10 @@ int		handle_comment(char *line, t_asm *data, int fd)
 		data->comment = ft_strjoin(ft_strdup(line + start), "\n");
 		read_all_comment(data, fd);
 	}
-	return((ft_strlen(data->comment) < COMMENT_LENGTH));
+	return ((ft_strlen(data->comment) < COMMENT_LENGTH));
 }
 
-int error_line(char *line)
+int		error_line(char *line)
 {
 	free(line);
 	return (0);
@@ -95,9 +107,11 @@ int		read_name_and_comment(int fd, t_asm *data)
 			line++;
 		if (ft_strnequ(line, NAME_CMD_STRING, 5) && !handle_name(line, data))
 			return (error_line(line));
-		if (ft_strnequ(line, COMMENT_CMD_STRING, 8) && !handle_comment(line, data, fd))
+		if (ft_strnequ(line, COMMENT_CMD_STRING, 8)
+			&& !handle_comment(line, data, fd))
 			return (error_line(line));
 		free(tmp);
 		data->num_lines++;
 	}
+	return (1);
 }

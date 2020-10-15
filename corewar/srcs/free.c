@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:16:59 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:17:00 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 void	free_all(t_asm *data)
 {
-	t_line	*line;
 	t_label	*label;
 
 	while (data->labels)
@@ -10,7 +21,7 @@ void	free_all(t_asm *data)
 		label = data->labels;
 		data->labels = data->labels->next;
 		free(label->name);
-		free(label);		
+		free(label);
 	}
 	lines_free(data->lines);
 	ft_strdel(&data->name);

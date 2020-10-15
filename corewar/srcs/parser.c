@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:17:42 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:17:43 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 int		handle_operations(char *line, t_asm *data)
@@ -23,7 +35,7 @@ int		handle_operations(char *line, t_asm *data)
 	return (1);
 }
 
-int parse(int fd, t_asm *data)
+int		parse(int fd, t_asm *data)
 {
 	char	*line;
 

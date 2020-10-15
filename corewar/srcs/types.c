@@ -1,17 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   types.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:17:47 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:17:48 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
-int		set_types(t_line *line)
+void	set_types(t_line *line)
 {
-	int i;
+	int		i;
 
-	i = -1;
-	t_line *tmp;
 	i = 0;
 	while (i < line->nb_params)
 	{
 		if (line->params[i][0] == 'r')
 			line->params_type[i] = T_REG;
-		else if(line->params[i][0] == '%')
+		else if (line->params[i][0] == '%')
 			line->params_type[i] = T_DIR;
 		else
 			line->params_type[i] = T_IND;
@@ -26,7 +36,7 @@ int		check_types(t_line *line, t_asm *data)
 
 	oper = data->oper[line->command - 1];
 	i = 0;
-	while (i  < oper.nb_params)
+	while (i < oper.nb_params)
 	{
 		if (!(oper.argv[i] & line->params_type[i]))
 			return (1);
@@ -44,7 +54,6 @@ void	parameters__eval_code_byte(t_line *line)
 							+ parameters_encode(line->params_type[1], 4)
 							+ parameters_encode(line->params_type[2], 2);
 }
-
 
 int		line_size(t_line *line, t_oper op)
 {
@@ -67,7 +76,6 @@ int		line_size(t_line *line, t_oper op)
 int		make_types(t_asm *data)
 {
 	t_line	*line;
-	int		i;
 
 	line = data->lines;
 	while (line)

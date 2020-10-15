@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:17:33 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:17:34 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 int		is_comment_or_empty(char *line)
@@ -7,14 +19,13 @@ int		is_comment_or_empty(char *line)
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	if (line[i] == COMMENT_CHAR|| line[i] == 0)
+	if (line[i] == COMMENT_CHAR || line[i] == 0)
 		return (1);
 	return (0);
 }
 
 char	*cut_line(char *line)
 {
-	char	*dst;
 	int		i;
 
 	i = 0;
@@ -34,7 +45,7 @@ int		wrong_symbol(char s)
 	return (1);
 }
 
-int		parser_is_digits(char *str)
+int		parser_digits(char *str)
 {
 	int i;
 

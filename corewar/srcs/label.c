@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   label.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:17:10 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:17:12 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 char	*handle_label(char *line, t_asm *data)
@@ -10,7 +22,8 @@ char	*handle_label(char *line, t_asm *data)
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	start = i;
-	while (line[i] && line[i] != LABEL_CHAR && line[i] != ' ' && line[i] != '\t')
+	while (line[i] && line[i] != LABEL_CHAR
+			&& line[i] != ' ' && line[i] != '\t')
 	{
 		if (wrong_symbol(line[i]))
 			return (0);
@@ -27,7 +40,7 @@ char	*handle_label(char *line, t_asm *data)
 	return (line);
 }
 
-int	find_label(t_asm *data, int nb, char *to_find)
+int	find_label(t_asm *data, char *to_find)
 {
 	t_label	*label;
 
@@ -56,12 +69,12 @@ char	*label_to_num(t_line *line, int direct, int target)
 	{
 		tmp = ft_strjoin("%", s);
 		free(s);
-		return(tmp);
+		return (tmp);
 	}
 	return (s);
 }
 
-int	labels_replace(t_asm *data)
+int		labels_replace(t_asm *data)
 {
 	t_line	*line;
 	int		i;
@@ -77,7 +90,7 @@ int	labels_replace(t_asm *data)
 			direct = line->params[i][1] == LABEL_CHAR;
 			if (line->params[i][0] == LABEL_CHAR || direct)
 			{
-				if ((target = find_label(data, line->line_nb, line->params[i] + 1 + direct)) == -1)
+				if ((target = find_label(data, line->params[i] + 1 + direct)) == -1)
 					return (0);
 				free(line->params[i]);
 				line->params[i] = label_to_num(line, direct, target);

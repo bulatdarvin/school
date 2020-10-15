@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:16:51 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:16:53 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 char	*file_create_name(char *path)
@@ -85,7 +97,6 @@ void	file_write_header(t_asm *data, int fd)
 
 int		file_write(t_asm *data, int fd, char *path)
 {
-
 	t_line	*line;
 
 	if (!(data->file_name = file_create_name(path))
@@ -105,7 +116,6 @@ int		file_write(t_asm *data, int fd, char *path)
 			ft_putchar_fd(line->params_code_byte, fd);
 		file_write_params(data, line, fd);
 		line = line->next;
-	
 	}
 	close(fd);
 	return (1);

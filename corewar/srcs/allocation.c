@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   allocation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:16:39 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:16:43 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 t_oper	operation[17] =
@@ -27,7 +39,7 @@ t_oper	operation[17] =
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
 
-t_line	*new_line()
+t_line	*new_line(void)
 {
 	t_line	*line;
 	int		i;
@@ -47,7 +59,7 @@ t_line	*new_line()
 	return (line);
 }
 
-int		add_line(t_line *line, t_asm *data)
+void	add_line(t_line *line, t_asm *data)
 {
 	t_line	*tmp;
 	t_label	*labels;

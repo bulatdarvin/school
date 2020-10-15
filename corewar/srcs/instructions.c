@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   instructions.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssilvana <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/15 13:17:05 by ssilvana          #+#    #+#             */
+/*   Updated: 2020/10/15 13:17:06 by ssilvana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/asm.h"
 
 char	*parse_operations(char *line, t_asm *data, t_line *new)
@@ -39,13 +51,16 @@ char	*get_param(char *line, t_line *new, int nb_param)
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	start = i;
-	while (line[i] && line[i] != SEPARATOR_CHAR && line[i] != ' ' && line[i] != '\t')
+	while (line[i] && line[i] != SEPARATOR_CHAR
+			&& line[i] != ' ' && line[i] != '\t')
 		i++;
 	if (!(param = ft_strsub(line, start, i - start)))
 		return (0);
-	if ((param[0] == '%' && parser_is_digits(param + 1)) || (param[0] =='%' && param[1] == ':' 
-		&& is_label(param + 2)) || (param[0] == 'r' && ft_atoi(param + 1) > 0 
-		&& ft_atoi(param + 1) <= REG_NUMBER) ||	(param[0] != 'r' && ft_isdigit(param[0])))
+	if ((param[0] == '%' && parser_digits(param + 1)) ||
+		(param[0] == '%' && param[1] == ':' && is_label(param + 2)) ||
+		(param[0] == 'r' && ft_atoi(param + 1) > 0 &&
+		ft_atoi(param + 1) <= REG_NUMBER) ||
+		(param[0] != 'r' && ft_isdigit(param[0])))
 	{
 		new->params[nb_param] = param;
 		return (line + i + 1);
@@ -54,11 +69,10 @@ char	*get_param(char *line, t_line *new, int nb_param)
 	return (0);
 }
 
-char	*parse_params(char *line, t_asm *data, t_line *new)
+char	*parse_params(char *line, t_line *new)
 {
 	char	*tmp;
 	int		nb_param;
-	int		start;
 
 	nb_param = 0;
 	tmp = line;
@@ -67,7 +81,7 @@ char	*parse_params(char *line, t_asm *data, t_line *new)
 		while (*line && (*line == ' ' || *line == '\t'))
 			line++;
 		if (!(line = get_param(line, new, nb_param)))
-			return(0);
+			return (0);
 		nb_param++;
 	}
 	if (nb_param != new->nb_params)
@@ -77,12 +91,12 @@ char	*parse_params(char *line, t_asm *data, t_line *new)
 
 int		parse_line_instruct(char *line, t_asm *data, t_line *new)
 {
-	line = parse_operations(line, data, new);	
+	line = parse_operations(line, data, new);
 	if (line == 0)
 		return (0);
-	ft_putendl(line);
-	line = parse_params(line, data, new);
+	line = parse_params(line, new);
 	if (line == 0)
 		return (0);
 	new->line_nb = data->num_lines;
+	return (1);
 }

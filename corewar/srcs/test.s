@@ -1,6 +1,6 @@
 #deassembler par msa 1.8, made by joe
-.name ""
-.comment ""
+.name "adsfadsf"
+.comment "safds"
 
 	 fork  %:label00          		# 3,0,281
 	 ld    %-272,r3           		# 7,3,278
