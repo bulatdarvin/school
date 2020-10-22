@@ -28,7 +28,8 @@ char	*parse_operations(char *line, t_asm *data, t_line *new)
 		i++;
 	if (!line[i])
 		return (0);
-	operation = ft_strsub(line, start, i - start);
+	if (!(operation = ft_strsub(line, start, i - start)))
+		return (0);
 	while (op++ < 16)
 		if (ft_strequ(operation, data->oper[op].name))
 		{
@@ -58,12 +59,13 @@ char	*get_param(char *line, t_line *new, int nb_param)
 		return (0);
 	if ((param[0] == '%' && parser_digits(param + 1)) ||
 		(param[0] == '%' && param[1] == ':' && is_label(param + 2)) ||
-		(param[0] == 'r' && ft_atoi(param + 1) > 0 &&
+		(param[0] == ':' && is_label(param + 1)) ||
+		(param[0] == 'r' && ft_atoi(param + 1) >= 0 &&
 		ft_atoi(param + 1) <= REG_NUMBER) ||
-		(param[0] != 'r' && ft_isdigit(param[0])))
+		(param[0] != 'r' && parser_digits(param)))
 	{
 		new->params[nb_param] = param;
-		return (line + i + 1);
+		return (line + i);
 	}
 	free(param);
 	return (0);
@@ -76,13 +78,19 @@ char	*parse_params(char *line, t_line *new)
 
 	nb_param = 0;
 	tmp = line;
+	if (!(line = get_param(line, new, nb_param++)))
+		return (0);
 	while (nb_param < new->nb_params && *line)
 	{
 		while (*line && (*line == ' ' || *line == '\t'))
 			line++;
-		if (!(line = get_param(line, new, nb_param)))
+		if (*line != ',')
 			return (0);
-		nb_param++;
+		line++;
+		while (*line && (*line == ' ' || *line == '\t'))
+			line++;
+		if (!(line = get_param(line, new, nb_param++)))
+			return (0);
 	}
 	if (nb_param != new->nb_params)
 		return (0);

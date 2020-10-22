@@ -17,15 +17,20 @@ int	main(int argc, char **argv)
 	int		fd;
 	t_asm	data;
 
-	data_initialize(&data);
-	argc = 0;
-	fd = open(argv[1], O_RDONLY);
-	if (!reader(fd, &data) || !make_types(&data) ||
-		!labels_replace(&data) || !file_write(&data, fd, argv[1]))
+	if (argc == 2)
 	{
-		ft_putendl("ERROR in End");
+		data_initialize(&data);
+		argc = 0;
+		fd = open(argv[1], O_RDONLY);
+		if (!reader(fd, &data) || !make_types(&data) ||
+			!labels_replace(&data) || !file_write(&data, fd, argv[1]))
+		{
+			ft_putendl("ERROR");
+			free_all(&data);
+			return (0);
+		}
 		free_all(&data);
 		return (0);
 	}
-	free_all(&data);
+	ft_putendl("No File");
 }

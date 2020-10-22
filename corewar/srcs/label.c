@@ -100,3 +100,14 @@ int		labels_replace(t_asm *data)
 	}
 	return (1);
 }
+
+int		parser_handle_if_null(t_line *new)
+{
+	if (new->command == 0)
+	{
+		lines_free(new);
+		return (1);
+	}
+	else
+		return (0);
+}

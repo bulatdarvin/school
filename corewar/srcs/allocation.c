@@ -64,6 +64,8 @@ void	add_line(t_line *line, t_asm *data)
 	t_line	*tmp;
 	t_label	*labels;
 
+	if (parser_handle_if_null(line))
+		return ;
 	if (!data->lines)
 	{
 		data->lines = line;
